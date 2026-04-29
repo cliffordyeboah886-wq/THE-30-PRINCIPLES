@@ -1,0 +1,181 @@
+import React, { useState, useEffect } from 'react';
+import { ChevronLeft, ChevronRight, Quote, Maximize2, Minimize2, Play, Pause } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+
+const quotes = [
+  { tag: "On Integrity", text: "Power without integrity is a house built on sand; when the tide of truth rises, it leaves the oppressor with nothing to say." },
+  { tag: "On Documentation", text: "Voices can be drowned out and stories can be changed, but the written truth is an anchor that no storm can move." },
+  { tag: "On Resilience", text: "They thought they were burying me, but they didn't know I was a seed. The more they piled on the dirt of lies, the stronger my roots of truth grew." },
+  { tag: "On Evidence", text: "In a room full of false claims, a single piece of evidence is the only light that matters. Lies have no legs to stand on when the truth is documented." },
+  { tag: "On Mentorship", text: "A mentor’s greatest lesson isn't found in a textbook; it is found in showing a student how to stand tall when the world expects them to bow." },
+  { tag: "On Perception", text: "I do not need sound to recognise the rhythm of truth. Integrity has its own vibration, and I feel it in my soul." },
+  { tag: "On Advocacy", text: "I did not stand up just to save myself; I stood up so the path would be smoother for every student and teacher walking behind me." },
+  { tag: "On Identity", text: "My ears may not hear the noise of the world, but my heart hears the call for justice with perfect clarity." },
+  { tag: "On Leadership", text: "A true leader does not use their position to silence others, but to ensure that even the quietest voice is given the space to be heard." },
+  { tag: "On Courage", text: "The courage of a single heart is louder than the silence of a hundred fears." },
+  { tag: "On Liberation", text: "Fear is a heavy chain, but the truth is the key that unlocks it. Once you are free, you can never be enslaved by intimidation again." },
+  { tag: "On Equality", text: "Disability is only a limitation in the eyes of those who lack the vision to see our strength." },
+  { tag: "On the Power of One", text: "I waited for others to join me in the fight against injustice, only to realise that sometimes, one must be the light so that others may eventually find their way out of the dark." },
+  { tag: "On Justice vs. Rank", text: "They saw a 'lowly' man because I am Deaf; I saw a 'weak' system because they lacked integrity. In the court of truth, knowledge of justice is the ultimate equaliser." },
+  { tag: "On Authority", text: "Justice does not recognise rank, and truth does not bow to age. Knowledge of what is right is the ultimate equaliser." },
+  { tag: "On Advocacy", text: "The 'smoking gun' of evidence is only powerful if you have the courage to pull the trigger of truth." },
+  { tag: "On True Disability", text: "True disability is not the loss of hearing; it is the loss of the will to stand up for what is right." },
+  { tag: "On Actions", text: "I may be a man of few spoken words, but my actions will always speak volumes for the rights of the vulnerable." },
+  { tag: "On Education", text: "A classroom is not just a place for facts; it is a sanctuary where character is forged and the courage to question is born." },
+  { tag: "On Silence", text: "There is a profound difference between being silenced and being silent. One is an act of oppression; the other is a choice of strength." },
+  { tag: "On Character", text: "The true measure of a man is not found in his titles, but in the echoes of the lives he has uplifted." },
+  { tag: "On Truth", text: "Truth is like the sun; you can hide it behind the clouds of bureaucracy for a while, but it will eventually burn through." },
+  { tag: "On Purpose", text: "My purpose was never to be famous, but to be faithful—faithful to the truth and to those who have no voice." },
+  { tag: "On Legacy", text: "Legacy is not what we leave for people, but what we leave in them." },
+  { tag: "On Responsibility", text: "To know the truth and remain silent is to side with the oppressor. Knowledge is not a gift to be kept; it is a tool to be used for justice." },
+  { tag: "On Unseen Strength", text: "They assume that because I cannot hear their words, I cannot understand their intentions. But I have learned to read the heart, and the heart never lies." },
+  { tag: "On Endurance", text: "The road to justice is long and often lonely, but I would rather walk a thousand miles in the light of truth than take a single step in the shadow of a lie." },
+  { tag: "On the Future", text: "We do not build for today; we build for the generations yet unborn, so they may never have to fight the battles we have already won." },
+  { tag: "On True Wealth", text: "Wealth is not measured by what you have in your pockets, but by the peace you have in your conscience when you close your eyes at night." },
+  { tag: "On the Final Word", text: "At the end of the day, the noise of the world fades away, and only the truth remains standing. I choose to stand with the truth." }
+];
+
+export default function CliffordRefinedKit() {
+  const [index, setIndex] = useState(0);
+  const [cleanMode, setCleanMode] = useState(false);
+  const [isAutoplay, setIsAutoplay] = useState(false);
+  const [direction, setDirection] = useState(0);
+
+  useEffect(() => {
+    let timer;
+    if (isAutoplay) {
+      timer = setInterval(() => {
+        setDirection(1);
+        setIndex((prev) => (prev + 1) % quotes.length);
+      }, 8000);
+    }
+    return () => clearInterval(timer);
+  }, [isAutoplay]);
+
+  const nextSlide = () => {
+    setDirection(1);
+    setIndex((prev) => (prev + 1) % quotes.length);
+  };
+
+  const prevSlide = () => {
+    setDirection(-1);
+    setIndex((prev) => (prev - 1 + quotes.length) % quotes.length);
+  };
+
+  const getFontSize = (text) => {
+    if (text.length > 160) return 'text-lg md:text-xl';
+    if (text.length > 120) return 'text-xl md:text-2xl';
+    return 'text-2xl md:text-3xl';
+  };
+
+  return (
+    <div className={`min-h-screen flex flex-col items-center justify-center transition-all duration-700 ${cleanMode ? 'bg-zinc-950' : 'bg-slate-50 p-4'}`}>
+      
+      {!cleanMode && (
+        <div className="mb-8 text-center">
+          <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tighter">The 30 Principles</h1>
+          <p className="text-slate-400 text-[10px] font-bold uppercase tracking-[0.4em]">Clifford Yeboah • Professional Series</p>
+        </div>
+      )}
+
+      {/* THE QUOTE CARD */}
+      <div className="relative w-full max-w-md bg-white shadow-2xl rounded-3xl overflow-hidden flex flex-col border border-slate-100">
+        
+        {/* TOP ACCENT */}
+        <div className="h-1.5 flex w-full">
+          <div className="flex-1 bg-red-600"></div>
+          <div className="flex-1 bg-yellow-400"></div>
+          <div className="flex-1 bg-green-700"></div>
+        </div>
+
+        <div className="flex-1 flex flex-col p-8 md:p-12 min-h-[460px]">
+          <Quote className="text-slate-50 w-16 h-16 mb-2" />
+          
+          <AnimatePresence mode="wait" custom={direction}>
+            <motion.div
+              key={index}
+              custom={direction}
+              initial={{ opacity: 0, x: direction * 15 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: direction * -15 }}
+              transition={{ duration: 0.4 }}
+              className="flex-1 flex flex-col"
+            >
+              {/* TAG */}
+              <div className="mb-6">
+                <span className="text-yellow-600 text-[9px] font-black uppercase tracking-[0.25em] border-b border-yellow-200 pb-1">
+                  {quotes[index].tag}
+                </span>
+              </div>
+              
+              {/* QUOTE TEXT */}
+              <div className="flex-1 flex items-center">
+                <h2 className={`${getFontSize(quotes[index].text)} font-serif italic text-slate-800 leading-relaxed`}>
+                  "{quotes[index].text}"
+                </h2>
+              </div>
+
+              {/* REFINED SIGNATURE AREA */}
+              <div className="mt-10 pt-8 border-t border-slate-50">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-full bg-slate-900 flex items-center justify-center text-white font-serif italic font-bold text-xs">
+                      CY
+                    </div>
+                    <div>
+                      <p className="text-slate-900 font-black text-base tracking-tight leading-none">
+                        Clifford Yeboah
+                      </p>
+                      {/* REDUCED SUBTITLE SIZE */}
+                      <p className="text-slate-400 text-[8px] font-bold uppercase tracking-[0.25em] mt-1.5">
+                        Teacher • Advocate • Leader
+                      </p>
+                    </div>
+                  </div>
+                  <div className="text-slate-100 font-black text-2xl italic select-none">
+                    {index + 1}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </div>
+
+      {/* INTERACTION CONTROLS */}
+      <div className={`mt-10 flex flex-col items-center gap-6 ${cleanMode ? 'opacity-10 hover:opacity-100 transition-opacity' : ''}`}>
+        <div className="flex items-center gap-4">
+          <button onClick={prevSlide} className="p-4 bg-white rounded-2xl shadow-sm border border-slate-100 hover:bg-slate-50 active:scale-95 transition-all">
+            <ChevronLeft size={20} className="text-slate-900" />
+          </button>
+          
+          <button
+            onClick={() => setCleanMode(!cleanMode)}
+            className="px-8 py-4 bg-slate-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg hover:shadow-xl transition-all active:scale-95 flex items-center gap-2"
+          >
+            {cleanMode ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
+            {cleanMode ? "Exit Clean View" : "Clean View for Screenshot"}
+          </button>
+
+          <button onClick={nextSlide} className="p-4 bg-white rounded-2xl shadow-sm border border-slate-100 hover:bg-slate-50 active:scale-95 transition-all">
+            <ChevronRight size={20} className="text-slate-900" />
+          </button>
+        </div>
+
+        {!cleanMode && (
+          <div className="flex flex-col items-center gap-4">
+            <button
+              onClick={() => setIsAutoplay(!isAutoplay)}
+              className={`flex items-center gap-2 px-5 py-2 rounded-full font-bold text-[9px] uppercase tracking-widest transition-all ${
+                isAutoplay ? 'bg-red-500 text-white shadow-md' : 'bg-white text-slate-400 border border-slate-200'
+              }`}
+            >
+              {isAutoplay ? <Pause size={12} /> : <Play size={12} />}
+              {isAutoplay ? "Timer Active" : "Auto-Play (8s)"}
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
